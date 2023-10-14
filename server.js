@@ -2,12 +2,16 @@ const express = require('express');
 const dotenv = require('dotenv');
 // const logger = require('./middleware/logger');
 const morgan = require('morgan');
-
-// Importing route files
-const blogpost = require('./routes/blogpostRoutes');
+const connectDB = require('./config/db');
 
 // Load environment variables
 dotenv.config({ path: './config/config.env' });
+
+// Connect to the MongoDB Database
+connectDB();
+
+// Importing route files
+const blogpost = require('./routes/blogpostRoutes');
 
 const app = express();
 
