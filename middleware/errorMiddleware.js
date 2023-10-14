@@ -4,9 +4,23 @@ const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
 
-  //Check for Mongoose CastError
+  console.log(err);
+
+  //Check for Mongoose CastError(bad ObjectId)
   if (err.name === 'CastError') {
     const message = `Invalid Blogpost id: ${err.value} `;
+    error = new ErrorResponse(message, 400);
+  }
+
+  //Check for Mongoose duplicate key (code: 11000)
+  if (err.code === 11000) {
+    const message = `Entered title already exists`;
+    error = new ErrorResponse(message, 400);
+  }
+
+  //Check for Mongoose validation error
+  if (err.name === 'ValidationError') {
+    const message = Object.values(err.errors).map((val) => val.message);
     error = new ErrorResponse(message, 400);
   }
 
