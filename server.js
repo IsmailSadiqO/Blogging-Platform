@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 
 // Importing route files
-const blogposts = require('./routes/blogposts');
+const blogpost = require('./routes/blogpostRoutes');
 
 // Load env variables
 dotenv.config({ path: './config/config.env' });
@@ -10,7 +10,7 @@ dotenv.config({ path: './config/config.env' });
 const app = express();
 
 // Mount routers to corresponding route files
-app.use('/api/v1/blogposts', blogposts)
+app.use('/api/v1/blogposts', blogpost)
 
 const PORT = process.env.PORT || 8000;
 
