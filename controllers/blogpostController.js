@@ -1,88 +1,69 @@
 const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/asyncHandler');
 const Blogpost = require('../models/Blogpost');
 
 // @desc        Fetch all blogposts
 //@route        GET /api/v1/blogposts
 //@access       Public
-exports.getBlogPosts = async (req, res, next) => {
-  try {
-    const blogposts = await Blogpost.find();
-    res
-      .status(200)
-      .json({ success: true, count: blogposts.length, data: blogposts });
-  } catch (error) {
-    next(error);
-  }
-};
+exports.getBlogPosts = asyncHandler(async (req, res, next) => {
+  const blogposts = await Blogpost.find();
+  res
+    .status(200)
+    .json({ success: true, count: blogposts.length, data: blogposts });
+});
 
 // @desc        Create a blogpost
 //@route        POST /api/v1/blogposts
 //@access       Private/Admin
-exports.createBlogPost = async (req, res, next) => {
-  try {
-    const blogpost = await Blogpost.create(req.body);
-    res.status(201).json({ success: true, data: blogpost });
-  } catch (error) {
-    next(error);
-  }
-};
+exports.createBlogPost = asyncHandler(async (req, res, next) => {
+  const blogpost = await Blogpost.create(req.body);
+  res.status(201).json({ success: true, data: blogpost });
+});
 
 // @desc        Fetch a single blogpost
 //@route        GET /api/v1/blogposts/:id
 //@access       Public
-exports.getBlogPostById = async (req, res, next) => {
-  try {
-    const blogpost = await Blogpost.findById(req.params.id);
+exports.getBlogPostById = asyncHandler(async (req, res, next) => {
+  const blogpost = await Blogpost.findById(req.params.id);
 
-    if (!blogpost) {
-      return next(
-        new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
-      );
-    }
-
-    res.status(200).json({ success: true, data: blogpost });
-  } catch (error) {
-    next(error);
+  if (!blogpost) {
+    return next(
+      new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
+    );
   }
-};
+
+  res.status(200).json({ success: true, data: blogpost });
+});
 
 // @desc        Update a single blogpost
 //@route        PUT /api/v1/blogposts/:id
 //@access       Private/Admin
-exports.updateBlogPost = async (req, res, next) => {
-  try {
-    const blogpost = await Blogpost.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+exports.updateBlogPost = asyncHandler(async (req, res, next) => {
+  const blogpost = await Blogpost.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-    if (!blogpost) {
-      return next(
-        new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
-      );
-    }
-
-    res.status(200).json({ success: true, data: blogpost });
-  } catch (error) {
-    next(error);
+  if (!blogpost) {
+    return next(
+      new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
+    );
   }
-};
+
+  res.status(200).json({ success: true, data: blogpost });
+});
 
 // @desc        Delete a single blogpost
 //@route        DELETE /api/v1/blogposts/:id
 //@access       Private/Admin
-exports.deleteBlogPost = async (req, res, next) => {
-  try {
-    const blogpost = await Blogpost.findByIdAndDelete(req.params.id);
+exports.deleteBlogPost = asyncHandler(async (req, res, next) => {
+  const blogpost = await Blogpost.findByIdAndDelete(req.params.id);
 
-    if (!blogpost) {
-      return next(
-        new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
-      );
-    }
-
-    res.status(200).json({ success: true, message: 'BlogPost Deleted' });
-  } catch (error) {
-    next(error);
+  if (!blogpost) {
+    return next(
+      new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
+    );
   }
-};
+
+  res.status(200).json({ success: true, message: 'BlogPost Deleted' });
+});
