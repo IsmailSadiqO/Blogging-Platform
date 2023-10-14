@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 // const logger = require('./middleware/logger');
 const morgan = require('morgan');
+const colors = require('colors');
 const connectDB = require('./config/db');
 
 // Load environment variables
@@ -28,5 +29,8 @@ const PORT = process.env.PORT || 8000;
 
 app.listen(
   PORT,
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.green
+      .underline.bold
+  )
 );
