@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 // const logger = require('./middleware/logger');
 const morgan = require('morgan');
 const colors = require('colors');
+// const { errorHandler, notFound } = require('./middleware/errorMiddleware');
+const errorHandler = require('./middleware/errorMiddleware');
 const connectDB = require('./config/db');
 
 // Load environment variables
@@ -27,6 +29,9 @@ if (process.env.NODE_ENV === 'development') {
 
 // Mount routers to corresponding route files
 app.use('/api/v1/blogposts', blogpost);
+
+app.use(errorHandler);
+// app.use(notFound);
 
 const PORT = process.env.PORT || 8000;
 

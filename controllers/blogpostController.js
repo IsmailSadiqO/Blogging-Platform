@@ -1,3 +1,4 @@
+const ErrorResponse = require('../utils/errorResponse');
 const Blogpost = require('../models/Blogpost');
 
 // @desc        Fetch all blogposts
@@ -10,7 +11,7 @@ exports.getBlogPosts = async (req, res, next) => {
       .status(200)
       .json({ success: true, count: blogposts.length, data: blogposts });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -22,7 +23,7 @@ exports.createBlogPost = async (req, res, next) => {
     const blogpost = await Blogpost.create(req.body);
     res.status(201).json({ success: true, data: blogpost });
   } catch (error) {
-    res.status(400).json({ success: false, message: `${error.message}` });
+    next(error);
   }
 };
 
@@ -34,12 +35,14 @@ exports.getBlogPostById = async (req, res, next) => {
     const blogpost = await Blogpost.findById(req.params.id);
 
     if (!blogpost) {
-      return res.status(404).json({ success: true, data: {} });
+      return next(
+        new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
+      );
     }
 
     res.status(200).json({ success: true, data: blogpost });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -54,12 +57,14 @@ exports.updateBlogPost = async (req, res, next) => {
     });
 
     if (!blogpost) {
-      return res.status(404).json({ success: true, data: {} });
+      return next(
+        new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
+      );
     }
 
     res.status(200).json({ success: true, data: blogpost });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -71,11 +76,13 @@ exports.deleteBlogPost = async (req, res, next) => {
     const blogpost = await Blogpost.findByIdAndDelete(req.params.id);
 
     if (!blogpost) {
-      return res.status(404).json({ success: true, data: {} });
+      return next(
+        new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
+      );
     }
 
     res.status(200).json({ success: true, message: 'BlogPost Deleted' });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
