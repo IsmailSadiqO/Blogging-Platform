@@ -1,9 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
-// const logger = require('./middleware/logger');
 const morgan = require('morgan');
 const colors = require('colors');
-// const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 const errorHandler = require('./middleware/errorMiddleware');
 const connectDB = require('./config/db');
 
@@ -22,7 +20,6 @@ const app = express();
 app.use(express.json());
 
 // Dev logging Middleware
-// app.use(logger);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -31,7 +28,6 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/blogposts', blogpost);
 
 app.use(errorHandler);
-// app.use(notFound);
 
 const PORT = process.env.PORT || 8000;
 
