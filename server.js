@@ -16,6 +16,9 @@ const blogpost = require('./routes/blogpostRoutes');
 
 const app = express();
 
+// Body parser
+app.use(express.json());
+
 // Dev logging Middleware
 // app.use(logger);
 if (process.env.NODE_ENV === 'development') {

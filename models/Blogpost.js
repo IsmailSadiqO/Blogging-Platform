@@ -11,7 +11,7 @@ const BlogpostSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      maxlength: 50,
+      maxlength: 100,
     },
     content: {
       type: String,

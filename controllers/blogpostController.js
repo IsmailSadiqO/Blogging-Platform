@@ -1,3 +1,5 @@
+const Blogpost = require('../models/Blogpost');
+
 // @desc        Fetch all blogposts
 //@route        GET /api/v1/blogposts
 //@access       Public
@@ -8,8 +10,13 @@ exports.getBlogPosts = (req, res, next) => {
 // @desc        Create a blogpost
 //@route        POST /api/v1/blogposts
 //@access       Private/Admin
-exports.createBlogPost = (req, res, next) => {
-  res.status(200).json({ success: true, message: 'Create a new blog post' });
+exports.createBlogPost = async (req, res, next) => {
+  try {
+    const blogpost = await Blogpost.create(req.body);
+    res.status(201).json({ success: true, data: blogpost });
+  } catch (error) {
+    res.status(400).json({ success: false, message: `${error.message}` });
+  }
 };
 
 // @desc        Fetch a single blogpost
