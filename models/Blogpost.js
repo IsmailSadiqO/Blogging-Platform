@@ -9,13 +9,13 @@ const BlogpostSchema = new mongoose.Schema(
     // },
     title: {
       type: String,
-      required: true,
+      required: [true, ' Blogpost title is required'],
       unique: true,
       maxlength: 100,
     },
     content: {
       type: String,
-      required: true,
+      required: [true, ' Blogpost content is required'],
     },
     category: {
       type: [String],
