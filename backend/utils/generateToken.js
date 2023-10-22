@@ -10,7 +10,7 @@ const generateToken = (res, userId) => {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',
     sameSite: 'strict',
-    maxAge: 3 * 24 * 60 * 60 * 1000, //3 days in milliseconds
+    maxAge: process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000, //3 days in milliseconds
   });
 
   return token;

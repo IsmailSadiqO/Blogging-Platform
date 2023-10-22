@@ -6,7 +6,7 @@ const generateToken = require('../utils/generateToken');
 // @desc        Register user
 //@route        POST /api/v1/auth/register
 //@access       Public
-exports.register = asyncHandler(async (req, res, next) => {
+exports.registerUser = asyncHandler(async (req, res, next) => {
   const { firstName, lastName, userName, email, password } = req.body;
 
   const emailExists = await User.findOne({ email });
@@ -51,5 +51,66 @@ exports.register = asyncHandler(async (req, res, next) => {
         token,
       },
     });
+  } else {
+    return next(new ErrorResponse(`Invalid user data`, 400));
+  }
+});
+
+// @desc        Login user & get token
+//@route        POST /api/v1/auth/login
+//@access       Public
+exports.loginUser = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // Validate email and password are entered
+  if (!email) {
+    return next(new ErrorResponse(`Please provide an email`, 400));
+  }
+  if (!password) {
+    return next(new ErrorResponse(`Please provide a password`, 400));
+  }
+
+  // Validate email and password are correct
+  const user = await User.findOne({ email }).select('+password');
+  if (user && (await user.matchPassword(password))) {
+    const token = generateToken(res, user._id);
+    res.status(200).json({
+      success: true,
+      data: {
+        userId: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token,
+      },
+    });
+  } else {
+    return next(new ErrorResponse(`Invalid email or password`, 400));
+  }
+});
+
+// @desc        Get user profile
+//@route        GET /api/v1/auth/me
+//@access       Private
+exports.getUserProfile = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  if (user) {
+    const token = req.cookies.jwt;
+    res.status(200).json({
+      success: true,
+      data: {
+        userId: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token,
+      },
+    });
+  } else {
+    return next(new ErrorResponse(`User not found`, 404));
   }
 });
