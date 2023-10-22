@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const BlogpostSchema = new mongoose.Schema(
   {
-    // userId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   required: true,
-    //   ref: 'User',
-    // },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
     title: {
       type: String,
       required: [true, ' Blogpost title is required'],
@@ -33,7 +33,7 @@ const BlogpostSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       required: true,
-      default: true,
+      default: false,
     },
   },
   {

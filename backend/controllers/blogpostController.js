@@ -13,6 +13,7 @@ exports.getBlogPosts = asyncHandler(async (req, res, next) => {
 //@route        POST /api/v1/blogposts
 //@access       Private/Admin
 exports.createBlogPost = asyncHandler(async (req, res, next) => {
+  req.body.user = req.user.id; //Add user to req.body
   const blogpost = await Blogpost.create(req.body);
   res.status(201).json({ success: true, data: blogpost });
 });

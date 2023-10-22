@@ -8,12 +8,17 @@ const connectDB = require('./config/db');
 dotenv.config({ path: './config/config.env' });
 
 // Load Models
+const User = require('./models/User');
 const Blogpost = require('./models/Blogpost');
 
 //Connect to the MongoDB database
 connectDB();
 
 // Read JSON files
+const users = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8')
+);
+
 const blogposts = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/blogposts.json`, 'utf-8')
 );
@@ -21,6 +26,7 @@ const blogposts = JSON.parse(
 // Import Blogpots into DB
 const importData = async () => {
   try {
+    await User.create(users);
     await Blogpost.create(blogposts);
     console.log('Data Imported...'.green.inverse);
     process.exit();
@@ -31,6 +37,7 @@ const importData = async () => {
 // Delete Blogpost Data from the DB
 const deleteData = async () => {
   try {
+    await User.deleteMany();
     await Blogpost.deleteMany();
     console.log('Data Deleted...'.red.inverse);
     process.exit();

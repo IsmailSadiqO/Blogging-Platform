@@ -114,3 +114,33 @@ exports.getUserProfile = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`User not found`, 404));
   }
 });
+
+// @desc        Update user profile
+//@route        PUT /api/v1/auth/updatedetails
+//@access       Private
+exports.updateUserProfile = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select('+password');
+  if (user) {
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName = req.body.lastName || user.lastName;
+    user.userName = req.body.userName || user.userName;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    const updatedUser = await user.save();
+    res.status(200).json({
+      success: true,
+      data: {
+        userId: updatedUser._id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        userName: updatedUser.userName,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      },
+    });
+  } else {
+    return next(new ErrorResponse(`User not found`, 404));
+  }
+});
