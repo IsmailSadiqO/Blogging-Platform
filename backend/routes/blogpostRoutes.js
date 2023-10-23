@@ -19,7 +19,15 @@ router.use('/:blogpostId/comments', commentRouter);
 
 router
   .route('/')
+  // .get(
+  //   resultCustomizationMiddleware(Blogpost, {
+  //     path: 'comments',
+  //     select: '-blogpostId',
+  //   }),
+  //   getBlogPosts
+  // )
   .get(resultCustomizationMiddleware(Blogpost, 'comments'), getBlogPosts)
+  // .get(resultCustomizationMiddleware(Blogpost), getBlogPosts)
   .post(protect, admin, createBlogPost);
 
 router

@@ -1,6 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 const Blogpost = require('../models/Blogpost');
+const Comment = require('../models/Comment');
 
 // @desc        Fetch all blogposts
 //@route        GET /api/v1/blogposts
@@ -57,13 +58,20 @@ exports.updateBlogPost = asyncHandler(async (req, res, next) => {
 exports.deleteBlogPost = asyncHandler(async (req, res, next) => {
   const blogpost = await Blogpost.findById(req.params.id);
 
-  if (!blogpost) {
+  // if (!blogpost) {
+  //   return next(
+  //     new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
+  //   );
+  // }
+  if (blogpost) {
+    await Blogpost.deleteOne({ _id: blogpost._id });
+    await Comment.deleteMany({ blogpostId: blogpost._id });
+    res.status(200).json({ success: true, message: 'BlogPost Deleted' });
+  } else {
     return next(
       new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
     );
   }
 
-  blogpost.remove();
-
-  res.status(200).json({ success: true, message: 'BlogPost Deleted' });
+  // blogpost.remove();
 });

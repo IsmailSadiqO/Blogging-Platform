@@ -36,8 +36,9 @@ const importData = async () => {
     await Comment.create(comments);
     console.log('Data Imported...'.green.inverse);
     process.exit();
-  } catch (error) {}
-  console.error(error);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // Delete Blogpost Data from the DB
@@ -48,8 +49,9 @@ const deleteData = async () => {
     await Comment.deleteMany();
     console.log('Data Deleted...'.red.inverse);
     process.exit();
-  } catch (error) {}
-  console.error(error);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 if (process.argv[2] === '-i') {
