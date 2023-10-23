@@ -6,14 +6,12 @@ const { protect, admin } = require('../middleware/authMiddleware');
 
 const router = express.Router({ mergeParams: true });
 
-router.route('/').get(getComments);
-
-// router.route('/').get(
-//   resultCustomizationMiddleware(Course, {
-//     path: 'blogPostId',
-//     select: 'title',
-//   }),
-//   getComments
-// );
+router.route('/').get(
+  resultCustomizationMiddleware(Comment, {
+    path: 'commenter',
+    select: 'firstName lastName',
+  }),
+  getComments
+);
 
 module.exports = router;
