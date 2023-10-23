@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const BlogpostSchema = new mongoose.Schema(
   {
-    user: {
+    author: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
@@ -38,7 +38,25 @@ const BlogpostSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+// Cascade delete comments when a blogpost is deleted
+BlogpostSchema.pre('remove', async function (next) {
+  await this.model('Comment').deleteMany({ commenter: this._id });
+  next();
+});
+
+// Reverse populate with virtuals
+BlogpostSchema.virtual('comments', {
+  ref: 'Comment',
+  localField: '_id',
+  foreignField: 'blogpostId',
+  justOne: false,
+});
 
 module.exports = mongoose.model('Blogpost', BlogpostSchema);

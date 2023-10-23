@@ -15,6 +15,7 @@ connectDB();
 // Importing route files
 const blogpost = require('./routes/blogpostRoutes');
 const auth = require('./routes/authRoutes');
+const comment = require('./routes/commentRoutes');
 
 const app = express();
 
@@ -33,6 +34,7 @@ if (process.env.NODE_ENV === 'development') {
 // Mount routers to corresponding route files
 app.use('/api/v1/blogposts', blogpost);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/comments', comment);
 
 app.use(errorHandler);
 

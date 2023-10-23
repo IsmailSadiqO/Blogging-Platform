@@ -1,56 +1,61 @@
-const resultCustomizationMiddleware = (model) => async (req, res, next) => {
-  let query;
+const resultCustomizationMiddleware =
+  (model, populate) => async (req, res, next) => {
+    let query;
 
-  // Copy of req.query
-  const reqQuery = { ...req.query };
+    // Copy of req.query
+    let reqQuery = { ...req.query };
 
-  // Fields to exclude
-  const removeFields = ['page', 'limit'];
+    // Fields to exclude
+    const removeFields = ['page', 'limit'];
 
-  // Loop over removeFields and delete them from reqQuery
-  removeFields.forEach((param) => delete reqQuery[param]);
+    // Loop over removeFields and delete them from reqQuery
+    removeFields.forEach((param) => delete reqQuery[param]);
 
-  // Searching DB
-  query = model.find(reqQuery);
+    // Searching DB
+    query = model.find(reqQuery);
 
-  // Pagination
-  const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 10;
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const total = await model.countDocuments();
+    // Pagination
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const total = await model.countDocuments();
 
-  query = query.skip(startIndex).limit(limit);
+    if (populate) {
+      query = query.populate(populate);
+    }
 
-  // Execute Query
-  const results = await query;
+    query = query.skip(startIndex).limit(limit);
 
-  // Pagination result
-  const pagination = {};
+    // Execute Query
+    const results = await query;
 
-  if (endIndex < total) {
-    pagination.next = {
-      page: page + 1,
-      // limit,
+    // Pagination result
+    const pagination = {};
+
+    if (endIndex < total) {
+      pagination.next = {
+        page: page + 1,
+        // limit,
+      };
+    }
+
+    if (startIndex > 0) {
+      pagination.prev = {
+        page: page - 1,
+        // limit,
+      };
+    }
+
+    res.resultCustomizationMiddleware = {
+      success: true,
+      count: results.length,
+      pagination,
+      pageLimit: limit,
+      data: results,
     };
-  }
 
-  if (startIndex > 0) {
-    pagination.prev = {
-      page: page - 1,
-      // limit,
-    };
-  }
-
-  res.resultCustomizationMiddleware = {
-    success: true,
-    count: results.length,
-    pagination,
-    pageLimit: limit,
-    data: results,
+    next();
   };
-
-  next();
-};
 
 module.exports = resultCustomizationMiddleware;

@@ -13,7 +13,7 @@ exports.getBlogPosts = asyncHandler(async (req, res, next) => {
 //@route        POST /api/v1/blogposts
 //@access       Private/Admin
 exports.createBlogPost = asyncHandler(async (req, res, next) => {
-  req.body.user = req.user.id; //Add user to req.body
+  req.body.author = req.user.id; //Add user to req.body
   const blogpost = await Blogpost.create(req.body);
   res.status(201).json({ success: true, data: blogpost });
 });
@@ -55,13 +55,15 @@ exports.updateBlogPost = asyncHandler(async (req, res, next) => {
 //@route        DELETE /api/v1/blogposts/:id
 //@access       Private/Admin
 exports.deleteBlogPost = asyncHandler(async (req, res, next) => {
-  const blogpost = await Blogpost.findByIdAndDelete(req.params.id);
+  const blogpost = await Blogpost.findById(req.params.id);
 
   if (!blogpost) {
     return next(
       new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
     );
   }
+
+  blogpost.remove();
 
   res.status(200).json({ success: true, message: 'BlogPost Deleted' });
 });
