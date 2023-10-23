@@ -7,6 +7,7 @@ const {
   deleteBlogPost,
 } = require('../controllers/blogpostController');
 const Blogpost = require('../models/Blogpost');
+const User = require('../models/User');
 const resultCustomizationMiddleware = require('../middleware/resultCutomizationMiddleware');
 
 // Include other resource routers
@@ -22,10 +23,21 @@ router.use('/:blogpostId/comments', commentRouter);
 router
   .route('/')
   .get(
-    resultCustomizationMiddleware(Blogpost, {
-      path: 'comments',
-      select: 'commenter comment -blogpostId',
-    }),
+    // resultCustomizationMiddleware(Blogpost, {
+    //   path: 'comments',
+    //   select: 'commenter comment -blogpostId',
+    // }),
+    resultCustomizationMiddleware(
+      Blogpost,
+      {
+        path: 'comments',
+        select: 'commenter comment -blogpostId',
+      },
+      {
+        path: 'author',
+        select: 'firstName lastName',
+      }
+    ),
     getBlogPosts
   )
   .post(protect, admin, createBlogPost);

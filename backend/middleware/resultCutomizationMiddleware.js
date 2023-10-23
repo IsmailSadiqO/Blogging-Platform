@@ -1,5 +1,5 @@
 const resultCustomizationMiddleware =
-  (model, populate) => async (req, res, next) => {
+  (model, populate, populate2) => async (req, res, next) => {
     let query;
 
     // Copy of req.query
@@ -23,6 +23,10 @@ const resultCustomizationMiddleware =
 
     if (populate) {
       query = query.populate(populate);
+    }
+
+    if (populate2) {
+      query = query.populate(populate2);
     }
 
     query = query.skip(startIndex).limit(limit);

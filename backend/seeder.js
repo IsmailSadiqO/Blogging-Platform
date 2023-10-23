@@ -5,7 +5,8 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
 // Load environment variables
-dotenv.config({ path: './config/config.env' });
+// dotenv.config({ path: './config/config.env' });
+dotenv.config();
 
 // Load Models
 const User = require('./models/User');

@@ -7,7 +7,10 @@ const errorHandler = require('./middleware/errorMiddleware');
 const connectDB = require('./config/db');
 
 // Load environment variables
-dotenv.config({ path: './config/config.env' });
+// dotenv.config({ path: './config/config.env' });
+dotenv.config();
+
+const PORT = process.env.PORT || 8000;
 
 // Connect to the MongoDB Database
 connectDB();
@@ -37,8 +40,6 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/comments', comment);
 
 app.use(errorHandler);
-
-const PORT = process.env.PORT || 8000;
 
 app.listen(
   PORT,

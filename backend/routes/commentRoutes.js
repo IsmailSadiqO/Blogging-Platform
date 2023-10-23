@@ -8,7 +8,7 @@ const {
 } = require('../controllers/commentController');
 const Comment = require('../models/Comment');
 const resultCustomizationMiddleware = require('../middleware/resultCutomizationMiddleware');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect } = require('../middleware/authMiddleware');
 
 const router = express.Router({ mergeParams: true });
 
