@@ -57,7 +57,7 @@ exports.addComment = asyncHandler(async (req, res, next) => {
   if (!blogpost) {
     return next(
       new ErrorResponse(
-        `Blogpost not found with id:  ${req.params.blogpostId}`,
+        `Comment not found with id:  ${req.params.blogpostId}`,
         404
       )
     );
@@ -68,5 +68,68 @@ exports.addComment = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     sucess: true,
     data: comment,
+  });
+});
+
+// @desc        Update a comment
+//@route        PUT /api/v1/comments/:id
+//@access       Private
+exports.uppdateComment = asyncHandler(async (req, res, next) => {
+  let comment = await Comment.findById(req.params.id);
+
+  if (!comment) {
+    return next(
+      new ErrorResponse(`Comment not found with id:  ${req.params.id}`, 404)
+    );
+  }
+
+  // Check if comment belongs to user or if user is an admin
+  if (
+    comment.commenter.toString() !== req.user.id &&
+    req.user.isAdmin !== true
+  ) {
+    return next(
+      new ErrorResponse(`Not authorized to update this comment`, 401)
+    );
+  }
+
+  comment = await Comment.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    sucess: true,
+    data: comment,
+  });
+});
+
+// @desc        Delete a comment
+//@route        DELETE /api/v1/comments/:id
+//@access       Private
+exports.deleteComment = asyncHandler(async (req, res, next) => {
+  const comment = await Comment.findById(req.params.id);
+
+  if (!comment) {
+    return next(
+      new ErrorResponse(`Comment not found with id:  ${req.params.id}`, 404)
+    );
+  }
+
+  // Check if comment belongs to user or if user is an admin
+  if (
+    comment.commenter.toString() !== req.user.id &&
+    req.user.isAdmin !== true
+  ) {
+    return next(
+      new ErrorResponse(`Not authorized to delete this comment`, 401)
+    );
+  }
+
+  await Comment.deleteOne({ _id: req.params.id });
+
+  res.status(200).json({
+    sucess: true,
+    data: {},
   });
 });

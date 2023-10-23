@@ -3,6 +3,8 @@ const {
   getComments,
   getCommentById,
   addComment,
+  uppdateComment,
+  deleteComment,
 } = require('../controllers/commentController');
 const Comment = require('../models/Comment');
 const resultCustomizationMiddleware = require('../middleware/resultCutomizationMiddleware');
@@ -21,6 +23,10 @@ router
   )
   .post(protect, addComment);
 
-router.route('/:id').get(getCommentById);
+router
+  .route('/:id')
+  .get(getCommentById)
+  .put(protect, uppdateComment)
+  .delete(protect, deleteComment);
 
 module.exports = router;

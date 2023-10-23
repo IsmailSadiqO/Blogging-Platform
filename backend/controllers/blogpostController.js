@@ -58,11 +58,6 @@ exports.updateBlogPost = asyncHandler(async (req, res, next) => {
 exports.deleteBlogPost = asyncHandler(async (req, res, next) => {
   const blogpost = await Blogpost.findById(req.params.id);
 
-  // if (!blogpost) {
-  //   return next(
-  //     new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
-  //   );
-  // }
   if (blogpost) {
     await Blogpost.deleteOne({ _id: blogpost._id });
     await Comment.deleteMany({ blogpostId: blogpost._id });
@@ -72,6 +67,4 @@ exports.deleteBlogPost = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`Blogpost not found with id: ${req.params.id}`, 404)
     );
   }
-
-  // blogpost.remove();
 });
