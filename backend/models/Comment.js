@@ -9,18 +9,6 @@ const CommentSchema = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    // commenterFirstName: {
-    //   //   type: mongoose.Schema.Types.String,
-    //   type: String,
-    //   required: true,
-    //   //   ref: 'User',
-    // },
-    // commenterLastName: {
-    //   //   type: mongoose.Schema.Types.String,
-    //   type: String,
-    //   required: true,
-    //   //   ref: 'User',
-    // },
     blogpostId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -35,5 +23,8 @@ const CommentSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Prevent user from submitting more than 1 comment per Blogpost
+CommentSchema.index({ blogpostId: 1, commenter: 1 }, { unique: true });
 
 module.exports = mongoose.model('Comment', CommentSchema);

@@ -8,8 +8,10 @@ const {
 } = require('../controllers/blogpostController');
 const Blogpost = require('../models/Blogpost');
 const resultCustomizationMiddleware = require('../middleware/resultCutomizationMiddleware');
+
 // Include other resource routers
 const commentRouter = require('./commentRoutes');
+
 const { protect, admin } = require('../middleware/authMiddleware');
 
 const router = express.Router();

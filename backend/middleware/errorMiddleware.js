@@ -8,13 +8,13 @@ const errorHandler = (err, req, res, next) => {
 
   //Check for Mongoose CastError(bad ObjectId)
   if (err.name === 'CastError') {
-    const message = `Invalid Blogpost id: ${err.value} `;
+    const message = `Invalid resource id: ${err.value} `;
     error = new ErrorResponse(message, 400);
   }
 
   //Check for Mongoose duplicate key (code: 11000)
   if (err.code === 11000) {
-    const message = `Entered title already exists`;
+    const message = `Duplicate field value detected`;
     error = new ErrorResponse(message, 400);
   }
 
