@@ -56,7 +56,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   }
 });
 
-// @desc        Login user & get token
+// @desc        Login user & get cookie
 //@route        POST /api/v1/auth/login
 //@access       Public
 exports.loginUser = asyncHandler(async (req, res, next) => {
@@ -89,6 +89,21 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   } else {
     return next(new ErrorResponse(`Invalid email or password`, 400));
   }
+});
+
+// @desc        Logout user & destroy cookie
+//@route        GET /api/v1/auth/logout
+//@access       Private
+exports.logout = asyncHandler(async (req, res, next) => {
+  res.cookie('jwt', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
 });
 
 // @desc        Get user profile
