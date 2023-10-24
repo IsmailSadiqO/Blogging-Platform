@@ -1,0 +1,32 @@
+[
+  {
+    "_id": "5d725a037b292f5f8ceff001",
+    "comment": "Lorem ipsum dolor sit amet",
+    "blogpostId": "6535fbef608b51afb0b01940",
+    "commenter": "6535fb6ffe4327856887ba52"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff002",
+    "comment": "consectetur adipiscing elit.",
+    "blogpostId": "6535fbef608b51afb0b01940",
+    "commenter": "6535fb989b23e624a72456a1"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff003",
+    "comment": "Donec viverra feugiat mauris id viverra.",
+    "blogpostId": "6535fc5b085a2a1887c457c4",
+    "commenter": "6535fb6ffe4327856887ba52"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff004",
+    "comment": "Duis luctus ex sed facilisis ultrices.",
+    "blogpostId": "6535fc5b085a2a1887c457c4",
+    "commenter": "6535fb989b23e624a72456a1"
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff005",
+    "comment": "Curabitur scelerisque bibendum ligula.",
+    "blogpostId": "6535fc5b085a2a1887c457c4",
+    "commenter": "6535fba83e0baf5f8ed4f346"
+  }
+]
