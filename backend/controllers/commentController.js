@@ -57,7 +57,7 @@ exports.addComment = asyncHandler(async (req, res, next) => {
   if (!blogpost) {
     return next(
       new ErrorResponse(
-        `Comment not found with id:  ${req.params.blogpostId}`,
+        `Blogpost not found with id:  ${req.params.blogpostId}`,
         404
       )
     );

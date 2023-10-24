@@ -1,25 +1,21 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Button, Form } from 'react-bootstrap';
 import {
   useGetBlogpostDetailsQuery,
   useGetCommentsForBlogpostQuery,
+  useCreateCommentMutation,
 } from '../slices/blogpostsApiSlice';
-// import {
-//   useGetLearningPathDetailsQuery,
-//   useGetCoursesForLearningPathQuery,
-//   useCreateReviewMutation,
-// } from '../slices/blogpostsApiSlice';
-// import { useGetUserProfileQuery } from '../slices/usersApiSlice';
-// import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-// import { FaInfoCircle } from 'react-icons/fa';
-// import { toast } from 'react-toastify';
-// import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 const BlogpostScreen = () => {
   const { id: blogpostId } = useParams();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     data: blogpostFullData,
@@ -32,8 +28,31 @@ const BlogpostScreen = () => {
     data: commentFullData,
     isLoading: commentIsLoading,
     error: commentError,
+    refetch,
   } = useGetCommentsForBlogpostQuery(blogpostId);
   let comments = commentFullData?.data;
+
+  const [comment, setComment] = useState('');
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const [createComment, { isLoading: loadingBlogpostComment }] =
+    useCreateCommentMutation();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await createComment({
+        blogpostId,
+        comment,
+      }).unwrap();
+      refetch();
+      toast.success('Comment Submitted');
+      setComment('');
+    } catch (err) {
+      toast.error(err?.data?.error || err.error);
+    }
+  };
 
   return (
     <>
@@ -76,6 +95,7 @@ const BlogpostScreen = () => {
               <>
                 <Col md={5} className="review">
                   <h2>Comments</h2>
+                  {comments.length == 0 && <Message>No Comments</Message>}
                   <ListGroup variant="flush">
                     {comments
                       .filter((comment) => comment.blogpostId === blogpostId)
@@ -91,15 +111,32 @@ const BlogpostScreen = () => {
                       ))}
                     <ListGroup.Item>
                       <h2>Write a Comment</h2>
-                      <Form>
-                        <Form.Group controlId="comment" className="my-2">
-                          <Form.Label>Comment</Form.Label>
-                          <Form.Control as="textarea" row="3"></Form.Control>
-                        </Form.Group>
-                        <Button type="submit" variant="primary">
-                          Submit
-                        </Button>
-                      </Form>
+                      {userInfo ? (
+                        <Form onSubmit={submitHandler}>
+                          <Form.Group controlId="comment" className="my-2">
+                            <Form.Label>Comment</Form.Label>
+                            <Form.Control
+                              as="textarea"
+                              row="3"
+                              value={comment}
+                              onChange={(e) => setComment(e.target.value)}
+                            ></Form.Control>
+                          </Form.Group>
+                          <Button
+                            disabled={loadingBlogpostComment}
+                            type="submit"
+                            variant="primary"
+                          >
+                            Submit
+                          </Button>
+                        </Form>
+                      ) : (
+                        <Message>
+                          {' '}
+                          Please <Link to="/auth/login">login</Link> to write a
+                          comment
+                        </Message>
+                      )}
                     </ListGroup.Item>
                   </ListGroup>
                 </Col>
