@@ -15,6 +15,7 @@ import reportWevVitals from './reportWebVitals';
 import HomeScreen from './screens/HomeScreen';
 import BlogpostScreen from './screens/BlogpostScreen';
 import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
       <Route index={true} path="/" element={<HomeScreen />} />
       <Route path="/blogposts/:id" element={<BlogpostScreen />} />
       <Route path="/auth/login" element={<LoginScreen />} />
+      <Route path="/auth/register" element={<RegisterScreen />} />
     </Route>
   )
 );
