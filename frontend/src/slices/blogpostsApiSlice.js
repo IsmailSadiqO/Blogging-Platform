@@ -22,56 +22,36 @@ export const blogpostsApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Comments'],
       keepUnusedDataFor: 5,
     }),
-    //     createLearningPath: builder.mutation({
-    //       query: () => ({
-    //         url: BLOGPOSTS_URL,
-    //         method: 'POST',
-    //       }),
-    //       invalidatesTags: ['LearningPaths'],
-    //     }),
-    //     updateLearningPath: builder.mutation({
-    //       query: (data) => ({
-    //         url: `${BLOGPOSTS_URL}/${data.learningPathId}`,
-    //         method: 'PUT',
-    //         body: data,
-    //       }),
-    //       invalidatesTags: ['LearningPaths'],
-    //     }),
-    //     deleteLearningPath: builder.mutation({
-    //       query: (learningPathId) => ({
-    //         url: `${BLOGPOSTS_URL}/${learningPathId}`,
-    //         method: 'DELETE',
-    //       }),
-    //     }),
-    //     createCourse: builder.mutation({
-    //       query: (learningPathId) => ({
-    //         url: `${BLOGPOSTS_URL}/${learningPathId}/courses`,
-    //         method: 'POST',
-    //       }),
-    //       invalidatesTags: ['Courses'],
-    //     }),
-    //     updateCourse: builder.mutation({
-    //       query: (data) => ({
-    //         url: `${BLOGPOSTS_URL}/${data.learningPathId}/courses/${data.courseId}`,
-    //         method: 'PUT',
-    //         body: data,
-    //       }),
-    //       invalidatesTags: ['Courses'],
-    //     }),
-    //     deleteCourse: builder.mutation({
-    //       query: ({ learningPathId, courseId }) => ({
-    //         url: `${BLOGPOSTS_URL}/${learningPathId}/courses/${courseId}`,
-    //         method: 'DELETE',
-    //       }),
-    //     }),
-    //     createReview: builder.mutation({
-    //       query: (data) => ({
-    //         url: `${BLOGPOSTS_URL}/${data.learningPathId}/reviews`,
-    //         method: 'POST',
-    //         body: data,
-    //       }),
-    //       invalidatesTags: ['LearningPath'],
-    //     }),
+    createBlogpost: builder.mutation({
+      query: (data) => ({
+        url: BLOGPOSTS_URL,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Blogposts'],
+    }),
+    updateBlogpost: builder.mutation({
+      query: (data) => ({
+        url: `${BLOGPOSTS_URL}/${data.blogpostId}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Blogposts'],
+    }),
+    deleteBlogpost: builder.mutation({
+      query: (blogpostId) => ({
+        url: `${BLOGPOSTS_URL}/${blogpostId}`,
+        method: 'DELETE',
+      }),
+    }),
+    createComment: builder.mutation({
+      query: (data) => ({
+        url: `${BLOGPOSTS_URL}/${data.blogpostId}/comments`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Blogpost'],
+    }),
   }),
 });
 
@@ -79,14 +59,8 @@ export const {
   useGetBlogpostsQuery,
   useGetBlogpostDetailsQuery,
   useGetCommentsForBlogpostQuery,
-  //   useGetCourseDetailsQuery,
-  //   useGetQuizzesForCourseQuery,
-  //   useCreateLearningPathMutation,
-  //   useUpdateLearningPathMutation,
-  //   useDeleteLearningPathMutation,
-  //   useCreateCourseMutation,
-  //   useUpdateCourseMutation,
-  //   useUploadCourseVideoMutation,
-  //   useDeleteCourseMutation,
-  //   useCreateReviewMutation,
+  useCreateBlogpostMutation,
+  useUpdateBlogpostMutation,
+  useDeleteBlogpostMutation,
+  useCreateCommentMutation,
 } = blogpostsApiSlice;

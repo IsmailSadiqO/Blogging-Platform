@@ -25,6 +25,6 @@ const CommentSchema = new mongoose.Schema(
 );
 
 // Prevent user from submitting more than 1 comment per Blogpost
-CommentSchema.index({ blogpostId: 1, commenter: 1 }, { unique: true });
+// CommentSchema.index({ blogpostId: 1, commenter: 1 }, { unique: true });
 
 module.exports = mongoose.model('Comment', CommentSchema);

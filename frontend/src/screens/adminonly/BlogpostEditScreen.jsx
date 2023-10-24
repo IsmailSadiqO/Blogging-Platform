@@ -6,12 +6,12 @@
 // import FormContainer from '../../components/FormContainer';
 // import { toast } from 'react-toastify';
 // import {
-//   useUpdateLearningPathMutation,
-//   useGetLearningPathDetailsQuery,
+//   useUpdateBlogpostMutation,
+//   useGetBlogpostDetailsQuery,
 // } from '../../slices/blogpostsApiSlice';
 
 // const BlogpostEditScreen = () => {
-//   const { learningPathId } = useParams();
+//   const { blogpostId } = useParams();
 
 //   const [name, setName] = useState('');
 //   const [description, setDescription] = useState('');
@@ -25,10 +25,10 @@
 //     isLoading,
 //     refetch,
 //     error,
-//   } = useGetLearningPathDetailsQuery(learningPathId);
+//   } = useGetBlogpostDetailsQuery(blogpostId);
 
 //   const [updateLearningPath, { isLoading: loadingUpdate }] =
-//     useUpdateLearningPathMutation();
+//     useUpdateBlogpostMutation();
 
 //   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@
 //   const submitHandler = async (e) => {
 //     e.preventDefault();
 //     const updatedLearningPath = {
-//       learningPathId,
+//       blogpostId,
 //       name,
 //       description,
 //       price,

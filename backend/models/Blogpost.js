@@ -28,6 +28,7 @@ const BlogpostSchema = new mongoose.Schema(
         'Data Science',
         'Systems Programming',
         'Other',
+        'Sample Category',
       ],
     },
     isActive: {

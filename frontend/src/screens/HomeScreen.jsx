@@ -22,11 +22,14 @@ const HomeScreen = () => {
         <>
           <h1>Blogposts</h1>
           <Row>
-            {blogposts.map((blogpost) => (
-              <Col key={blogpost._id} sm={12} md={6} lg={4} xl={3}>
-                <Blogpost blogpost={blogpost} />
-              </Col>
-            ))}
+            {blogposts.map(
+              (blogpost) =>
+                blogpost.isActive && (
+                  <Col key={blogpost._id} sm={12} md={6} lg={4} xl={3}>
+                    <Blogpost blogpost={blogpost} />
+                  </Col>
+                )
+            )}
           </Row>
         </>
       )}
