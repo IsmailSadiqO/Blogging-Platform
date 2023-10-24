@@ -1,153 +1,144 @@
-// import { useState, useEffect } from 'react';
-// import { Link, useNavigate, useParams } from 'react-router-dom';
-// import { Form, Button } from 'react-bootstrap';
-// import Message from '../../components/Message';
-// import Loader from '../../components/Loader';
-// import FormContainer from '../../components/FormContainer';
-// import { toast } from 'react-toastify';
-// import {
-//   useUpdateBlogpostMutation,
-//   useGetBlogpostDetailsQuery,
-// } from '../../slices/blogpostsApiSlice';
+import { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
+import FormContainer from '../../components/FormContainer';
+import { toast } from 'react-toastify';
+import {
+  useGetBlogpostsQuery,
+  useUpdateBlogpostMutation,
+  useGetBlogpostDetailsQuery,
+} from '../../slices/blogpostsApiSlice';
 
-// const BlogpostEditScreen = () => {
-//   const { blogpostId } = useParams();
+const BlogpostEditScreen = () => {
+  const { blogpostId } = useParams();
 
-//   const [name, setName] = useState('');
-//   const [description, setDescription] = useState('');
-//   const [language, setLanguage] = useState('');
-//   const [category, setCategory] = useState('');
-//   const [price, setPrice] = useState('');
-//   const [isActive, setIsActive] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [category, setCategory] = useState([]);
+  const [isActive, setIsActive] = useState('');
 
-//   const {
-//     data: learningPath,
-//     isLoading,
-//     refetch,
-//     error,
-//   } = useGetBlogpostDetailsQuery(blogpostId);
+  const options = [
+    { value: 'Web Development', label: 'Web Development' },
+    { value: 'Mobile Development', label: 'Mobile Development' },
+    { value: 'Backend Development', label: 'Backend Development' },
+    { value: 'UI/UX', label: 'UI/UX' },
+    { value: 'Data Science', label: 'Data Science' },
+    { value: 'Systems Programming', label: 'Systems Programming' },
+    { value: 'Other', label: 'Other' },
+  ];
 
-//   const [updateLearningPath, { isLoading: loadingUpdate }] =
-//     useUpdateBlogpostMutation();
+  const { data: blogpostsFullData, refetch: refetchBlogposts } =
+    useGetBlogpostsQuery();
+  let blogposts = blogpostsFullData?.data;
 
-//   const navigate = useNavigate();
+  const {
+    data: blogpostFullData,
+    isLoading,
+    refetch,
+    error,
+  } = useGetBlogpostDetailsQuery(blogpostId);
+  let blogpost = blogpostFullData?.data;
 
-//   useEffect(() => {
-//     if (learningPath) {
-//       setName(learningPath.name);
-//       setDescription(learningPath.description);
-//       setPrice(learningPath.price);
-//       setLanguage(learningPath.language);
-//       setCategory(learningPath.category);
-//       setIsActive(learningPath.isActive);
-//     }
-//   }, [learningPath]);
+  const [updateBlogpost, { isLoading: loadingUpdate }] =
+    useUpdateBlogpostMutation();
 
-//   const submitHandler = async (e) => {
-//     e.preventDefault();
-//     const updatedLearningPath = {
-//       blogpostId,
-//       name,
-//       description,
-//       price,
-//       language,
-//       category,
-//       isActive,
-//     };
-//     const result = await updateLearningPath(updatedLearningPath);
-//     if (result.error) {
-//       toast.error(result.error);
-//     } else {
-//       refetch();
-//       toast.success('LearningPath Updated');
-//       navigate('/admin/learningpathlist');
-//     }
-//   };
+  const navigate = useNavigate();
 
-//   return (
-//     <>
-//       <Link to="/admin/learningpathlist" className="btn btn-light my-3">
-//         Go Back
-//       </Link>
-//       <FormContainer>
-//         <h1>Edit LearningPath</h1>
-//         {loadingUpdate && <Loader />}
-//         {isLoading ? (
-//           <Loader />
-//         ) : error ? (
-//           <Message vaeriant="danger">{error}</Message>
-//         ) : (
-//           <Form onSubmit={submitHandler}>
-//             <Form.Group controlId="name" className="my-2">
-//               <Form.Label>Learning Path Name</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 placeholder="Enter Learning Path name"
-//                 value={name}
-//                 onChange={(e) => setName(e.target.value)}
-//               ></Form.Control>
-//             </Form.Group>
+  useEffect(() => {
+    if (blogpost) {
+      setTitle(blogpost.title);
+      setContent(blogpost.content);
+      setCategory(blogpost.category);
+      setIsActive(blogpost.isActive);
+    }
+  }, [blogpost]);
 
-//             <Form.Group controlId="description" className="my-2">
-//               <Form.Label>Description</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 placeholder="Enter Learning Path Description"
-//                 value={description}
-//                 onChange={(e) => setDescription(e.target.value)}
-//               ></Form.Control>
-//             </Form.Group>
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const updatedBlogpost = {
+      blogpostId,
+      title,
+      content,
+      category,
+      isActive,
+    };
+    const result = await updateBlogpost(updatedBlogpost);
+    if (result.error) {
+      toast.error(result.error);
+    } else {
+      refetch();
+      toast.success('Blogpost Updated');
+      navigate('/admin/blogpostlist');
+      refetchBlogposts();
+    }
+  };
 
-//             <Form.Group controlId="price" className="my-2">
-//               <Form.Label>Price</Form.Label>
-//               <Form.Control
-//                 type="number"
-//                 pattern="[0-9]*"
-//                 placeholder="Enter Price"
-//                 value={price}
-//                 onChange={(e) => setPrice(e.target.value)}
-//               ></Form.Control>
-//             </Form.Group>
+  return (
+    <>
+      <Link to="/admin/blogpostlist" className="btn btn-light my-3">
+        Go Back
+      </Link>
+      <FormContainer>
+        <h1>Edit Blogpost</h1>
+        {loadingUpdate && <Loader />}
+        {isLoading ? (
+          <Loader />
+        ) : error ? (
+          <Message vaeriant="danger">{error}</Message>
+        ) : (
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId="title" className="my-2">
+              <Form.Label>Blogpost Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Blogpost title "
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-//             <Form.Group controlId="language" className="my-2">
-//               <Form.Label>Language</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 placeholder="Enter Language"
-//                 value={language}
-//                 onChange={(e) => setLanguage(e.target.value)}
-//               ></Form.Control>
-//             </Form.Group>
+            <Form.Group controlId="content" className="my-2">
+              <Form.Label>Content</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder="Enter Blogpost content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-//             <Form.Group controlId="category" className="my-2">
-//               <Form.Label>Category</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 placeholder="Enter Category"
-//                 value={category}
-//                 onChange={(e) => setCategory(e.target.value)}
-//               ></Form.Control>
-//             </Form.Group>
+            <Form.Group controlId="category" className="my-2">
+              <Form.Label>Categories</Form.Label>
+              <Select
+                isMulti
+                options={options}
+                value={category.map((val) => ({ value: val, label: val }))}
+                onChange={(selectedOptions) =>
+                  setCategory(selectedOptions.map((item) => item.value))
+                }
+              />
+            </Form.Group>
 
-//             <Form.Group controlId="isActive" className="my-2">
-//               {/* <Form.Label>Learning Path Visibility (isActive)</Form.Label>
-//                         <Form.Control type="boolean" placeholder="Enter true or false" value={isActive} onChange={(e) => setIsActive(e.target.value)}></Form.Control> */}
-//               <Form.Check
-//                 type="checkbox"
-//                 label="Learning Path Visibility (isActive)"
-//                 checked={isActive}
-//                 onChange={(e) => setIsActive(e.target.checked)}
-//               ></Form.Check>
-//             </Form.Group>
+            <Form.Group controlId="isActive" className="my-2">
+              <Form.Check
+                type="checkbox"
+                label="Blogpost Visibility (isActive)"
+                checked={isActive}
+                onChange={(e) => setIsActive(e.target.checked)}
+              ></Form.Check>
+            </Form.Group>
 
-//             <Button type="submit" variant="primary" className="my-2">
-//               Update
-//             </Button>
-//           </Form>
-//         )}
-//       </FormContainer>
-//     </>
-//   );
-// };
+            <Button type="submit" variant="primary" className="my-2">
+              Update
+            </Button>
+          </Form>
+        )}
+      </FormContainer>
+    </>
+  );
+};
 
-// export default BlogpostEditScreen;
+export default BlogpostEditScreen;
