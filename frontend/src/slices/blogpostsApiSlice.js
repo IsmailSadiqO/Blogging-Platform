@@ -9,19 +9,19 @@ export const blogpostsApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
-    //     getLearningPathDetails: builder.query({
-    //       query: (learningPathId) => ({
-    //         url: `${BLOGPOSTS_URL}/${learningPathId}`,
-    //       }),
-    //       keepUnusedDataFor: 5,
-    //     }),
-    //     getCoursesForLearningPath: builder.query({
-    //       query: (learningPathId) => ({
-    //         url: `${BLOGPOSTS_URL}/${learningPathId}/courses`,
-    //       }),
-    //       providesTags: ['Courses'],
-    //       keepUnusedDataFor: 5,
-    //     }),
+    getBlogpostDetails: builder.query({
+      query: (blogpostId) => ({
+        url: `${BLOGPOSTS_URL}/${blogpostId}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+    getCommentsForBlogpost: builder.query({
+      query: (blogpostId) => ({
+        url: `${BLOGPOSTS_URL}/${blogpostId}/comments`,
+      }),
+      providesTags: ['Comments'],
+      keepUnusedDataFor: 5,
+    }),
     //     getCourseDetails: builder.query({
     //       query: ({ learningPathId, courseId }) => ({
     //         url: `${BLOGPOSTS_URL}/${learningPathId}/courses/${courseId}`,
@@ -96,8 +96,8 @@ export const blogpostsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetBlogpostsQuery,
-  //   useGetLearningPathDetailsQuery,
-  //   useGetCoursesForLearningPathQuery,
+  useGetBlogpostDetailsQuery,
+  useGetCommentsForBlogpostQuery,
   //   useGetCourseDetailsQuery,
   //   useGetQuizzesForCourseQuery,
   //   useCreateLearningPathMutation,
