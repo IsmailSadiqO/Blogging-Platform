@@ -24,7 +24,8 @@ const Blogpost = ({ blogpost }) => {
 
         <Card.Text as="div">
           {' '}
-          <strong>Author:</strong> {blogpost.author}
+          <strong>Author:</strong> {blogpost.author.firstName}{' '}
+          {blogpost.author.lastName}
         </Card.Text>
       </Card.Body>
     </Card>

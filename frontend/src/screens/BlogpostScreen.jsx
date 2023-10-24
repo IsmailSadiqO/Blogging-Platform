@@ -1,8 +1,8 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import blogposts from '../blogposts';
-import comments from '../comments';
 // import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Button, Form } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 // import {
 //   useGetLearningPathDetailsQuery,
 //   useGetCoursesForLearningPathQuery,
@@ -18,8 +18,30 @@ import { Row, Col, ListGroup, Button, Form } from 'react-bootstrap';
 
 const BlogpostScreen = () => {
   const { id: blogpostId } = useParams();
-  const blogpostData = blogposts.find((b) => b._id === blogpostId);
-  //   const commentData = comments.find((c) => c.blogpostId === blogpostId);
+  const [blogpost, setBlogpost] = useState([]);
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogpost = async () => {
+      const { data: fullData } = await axios.get(
+        `/api/v1/blogposts/${blogpostId}`
+      );
+      let blogpostData = fullData.data;
+      setBlogpost(blogpostData);
+    };
+    fetchBlogpost();
+  }, [blogpostId]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const { data: fullData } = await axios.get(
+        `/api/v1/blogposts/${blogpostId}/comments`
+      );
+      let commentData = fullData.data;
+      setComments(commentData);
+    };
+    fetchComments();
+  }, [blogpostId]);
 
   return (
     <>
@@ -30,7 +52,7 @@ const BlogpostScreen = () => {
       <ListGroup variant="flush">
         <ListGroup.Item></ListGroup.Item>
         <ListGroup.Item>
-          <h3>{blogpostData.title}</h3>
+          <h3>{blogpost.title}</h3>
         </ListGroup.Item>
         <ListGroup.Item></ListGroup.Item>
       </ListGroup>
@@ -39,7 +61,7 @@ const BlogpostScreen = () => {
         <Col>
           <ListGroup.Item></ListGroup.Item>
           <ListGroup.Item className="text-justify">
-            {blogpostData.content}
+            {blogpost.content}
           </ListGroup.Item>
           <ListGroup.Item></ListGroup.Item>
         </Col>
@@ -51,8 +73,10 @@ const BlogpostScreen = () => {
               .filter((comment) => comment.blogpostId === blogpostId)
               .map((comment) => (
                 <ListGroup.Item key={comment._id}>
-                  <strong>{comment.commenter}</strong>
-                  {/* <p>{comment.createdAt.substring(0, 10)}</p> */}
+                  <strong>
+                    {comment.commenter.firstName} {comment.commenter.lastName}
+                  </strong>
+                  <p>{comment.createdAt.substring(0, 10)}</p>
                   <p>{comment.comment}</p>
                 </ListGroup.Item>
               ))}

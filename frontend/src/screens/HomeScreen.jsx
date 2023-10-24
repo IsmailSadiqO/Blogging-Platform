@@ -1,7 +1,7 @@
 import { Row, Col } from 'react-bootstrap';
 import Blogpost from '../components/Blogpost';
-import blogposts from '../blogposts';
-import comments from '../comments';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 // import { useGetBlogpostsQuery } from '../slices/blogpostsApiSlice';
 // import LearningPath from '../components/LearningPath';
 // import Loader from '../components/Loader';
@@ -12,6 +12,17 @@ import comments from '../comments';
 // import SearchBox from '../components/SearchBox';
 
 const HomeScreen = () => {
+  const [blogposts, setBlogposts] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogposts = async () => {
+      const { data: fullData } = await axios.get('/api/v1/blogposts');
+      let blogpostData = fullData.data;
+      setBlogposts(blogpostData);
+    };
+    fetchBlogposts();
+  }, []);
+
   return (
     <>
       <h1>Blogposts</h1>
