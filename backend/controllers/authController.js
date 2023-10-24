@@ -240,6 +240,14 @@ exports.updateUserById = asyncHandler(async (req, res, next) => {
     user.lastName = req.body.lastName || user.lastName;
     user.userName = req.body.userName || user.userName;
     user.email = req.body.email || user.email;
+    if (user.isAdmin == true && req.body.isAdmin == false) {
+      return next(
+        new ErrorResponse(
+          `Cannot take away admin priviledges from another admin on frontend`,
+          400
+        )
+      );
+    }
     if (user.isAdmin == false && req.body.isAdmin == true) {
       user.isAdmin = Boolean(req.body.isAdmin);
     }

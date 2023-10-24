@@ -10,7 +10,7 @@
 //   useGetLearningPathDetailsQuery,
 // } from '../../slices/blogpostsApiSlice';
 
-// const LearningPathEditScreen = () => {
+// const BlogpostEditScreen = () => {
 //   const { learningPathId } = useParams();
 
 //   const [name, setName] = useState('');
@@ -150,4 +150,4 @@
 //   );
 // };
 
-// export default LearningPathEditScreen;
+// export default BlogpostEditScreen;

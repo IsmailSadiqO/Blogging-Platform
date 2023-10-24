@@ -36,6 +36,17 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
+              {userInfo && userInfo.data.isAdmin && (
+                <NavDropdown title="Admin" id="adminmenu">
+                  <LinkContainer to="/admin/blogpostlist">
+                    <NavDropdown.Item>Blogposts</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/userlist">
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
+
               {userInfo ? (
                 <NavDropdown
                   title={`${userInfo.data.firstName} ${userInfo.data.lastName}`}

@@ -19,6 +19,10 @@ import BlogpostScreen from './screens/BlogpostScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import BlogpostListScreen from './screens/adminonly/BlogpostListScreen';
+import BlogpostEditScreen from './screens/adminonly/BlogpostEditScreen';
+import UserListScreen from './screens/adminonly/UserListScreen';
+import UserEditScreen from './screens/adminonly/UserEditScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,7 +36,15 @@ const router = createBrowserRouter(
         <Route path="/auth/me" element={<ProfileScreen />} />
       </Route>
 
-      <Route path="" element={<AdminRoute />}></Route>
+      <Route path="" element={<AdminRoute />}>
+        <Route path="/admin/blogpostlist" element={<BlogpostListScreen />} />
+        <Route
+          path="/admin/blogposts/:blogpostId/edit"
+          element={<BlogpostEditScreen />}
+        />
+        <Route path="/admin/userlist" element={<UserListScreen />} />
+        <Route path="/admin/user/:userId/edit" element={<UserEditScreen />} />
+      </Route>
     </Route>
   )
 );

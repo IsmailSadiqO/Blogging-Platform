@@ -12,7 +12,7 @@
 //   useDeleteLearningPathMutation,
 // } from '../../slices/blogpostsApiSlice';
 
-// const LearningPathListScreen = () => {
+// const BlogpostListScreen = () => {
 //   const { pageNumber } = useParams();
 
 //   const { data, isLoading, error, refetch } = useGetBlogpostsQuery({
@@ -129,4 +129,4 @@
 //   );
 // };
 
-// export default LearningPathListScreen;
+// export default BlogpostListScreen;
