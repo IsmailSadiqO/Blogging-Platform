@@ -22,18 +22,6 @@ export const blogpostsApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Comments'],
       keepUnusedDataFor: 5,
     }),
-    //     getCourseDetails: builder.query({
-    //       query: ({ learningPathId, courseId }) => ({
-    //         url: `${BLOGPOSTS_URL}/${learningPathId}/courses/${courseId}`,
-    //       }),
-    //       keepUnusedDataFor: 5,
-    //     }),
-    //     getQuizzesForCourse: builder.query({
-    //       query: ({ learningPathId, courseId }) => ({
-    //         url: `${BLOGPOSTS_URL}/${learningPathId}/courses/${courseId}/quizzes`,
-    //       }),
-    //       keepUnusedDataFor: 5,
-    //     }),
     //     createLearningPath: builder.mutation({
     //       query: () => ({
     //         url: BLOGPOSTS_URL,
@@ -69,13 +57,6 @@ export const blogpostsApiSlice = apiSlice.injectEndpoints({
     //         body: data,
     //       }),
     //       invalidatesTags: ['Courses'],
-    //     }),
-    //     uploadCourseVideo: builder.mutation({
-    //       query: (data) => ({
-    //         url: BLOGPOSTS_URL,
-    //         method: 'POST',
-    //         body: data,
-    //       }),
     //     }),
     //     deleteCourse: builder.mutation({
     //       query: ({ learningPathId, courseId }) => ({
