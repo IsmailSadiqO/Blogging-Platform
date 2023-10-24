@@ -44,12 +44,6 @@ const BlogpostSchema = new mongoose.Schema(
   }
 );
 
-// Cascade delete comments when a blogpost is deleted
-// BlogpostSchema.pre('remove', async function (next) {
-//   await this.model('Comment').deleteMany({ blogpostId: this._id });
-//   next();
-// });
-
 // Reverse populate with virtuals
 BlogpostSchema.virtual('comments', {
   ref: 'Comment',
