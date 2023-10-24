@@ -3,8 +3,6 @@ import Blogpost from '../components/Blogpost';
 import { useGetBlogpostsQuery } from '../slices/blogpostsApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-// import { useParams } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
 
 const HomeScreen = () => {
   const { data: fullData, isLoading, error } = useGetBlogpostsQuery();

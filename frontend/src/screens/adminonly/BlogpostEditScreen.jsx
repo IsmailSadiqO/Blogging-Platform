@@ -30,9 +30,7 @@ const BlogpostEditScreen = () => {
     { value: 'Other', label: 'Other' },
   ];
 
-  const { data: blogpostsFullData, refetch: refetchBlogposts } =
-    useGetBlogpostsQuery();
-  let blogposts = blogpostsFullData?.data;
+  const { refetch: refetchBlogposts } = useGetBlogpostsQuery();
 
   const {
     data: blogpostFullData,

@@ -1,5 +1,5 @@
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Button, Form } from 'react-bootstrap';
 import {
   useGetBlogpostDetailsQuery,
@@ -13,9 +13,6 @@ import { useState } from 'react';
 
 const BlogpostScreen = () => {
   const { id: blogpostId } = useParams();
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const {
     data: blogpostFullData,
@@ -95,7 +92,7 @@ const BlogpostScreen = () => {
               <>
                 <Col md={5} className="review">
                   <h2>Comments</h2>
-                  {comments.length == 0 && <Message>No Comments</Message>}
+                  {comments.length === 0 && <Message>No Comments</Message>}
                   <ListGroup variant="flush">
                     {comments
                       .filter((comment) => comment.blogpostId === blogpostId)
