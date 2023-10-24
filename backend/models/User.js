@@ -58,11 +58,4 @@ UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// sign JWT token and return
-// UserSchema.methods.getSignedJwtToken = function () {
-//   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-//     expiresIn: process.env.JWT_EXPIRE,
-//   });
-// };
-
 module.exports = mongoose.model('User', UserSchema);
